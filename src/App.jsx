@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';      // <--- Change P to p
-import Signup from './pages/Signup';    // <--- Change P to p
-import Dashboard from './pages/Dashboard'; // <--- Change P to p
+import Login from './Pages/Login';      
+import Signup from './pages/Signup';   
+import Dashboard from './pages/Dashboard'; 
 import './App.css';
 
 function App() {
