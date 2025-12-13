@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './Pages/Login';       // Capital 'P' to match your folder
-import Signup from './Pages/Signup';     // Capital 'P' to match your folder
-import Dashboard from './pages/Dashboard'; // Capital 'P' to match your folder
+import Login from './pages/Login';      // <--- Change P to p
+import Signup from './pages/Signup';    // <--- Change P to p
+import Dashboard from './pages/Dashboard'; // <--- Change P to p
 import './App.css';
 
 function App() {
