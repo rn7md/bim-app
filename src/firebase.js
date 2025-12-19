@@ -1,6 +1,7 @@
-// src/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"; // 1. Import the Auth tool
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDjSjLV0UWFvLw-ccrHvG9WMtnoiZlAeLw",
@@ -13,7 +14,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// 2. Initialize and Export Auth so the app can use it
-export const auth = getAuth(app); 
-
-export default app;
+export const auth = getAuth(app);
+// This connects to your specific "bim-db" database where the rules are public
+export const db = getFirestore(app, "bim-db");
+export const storage = getStorage(app);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../firebase'; 
+import { supabase } from "../supbaseClient.js";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -9,19 +8,31 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // Added loading state
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
-      // Create the user in Firebase
-      await createUserWithEmailAndPassword(auth, email, password);
-      console.log("Account Created");
+      // CHANGED: Create the user in Supabase
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) throw error;
+
+      console.log("Account Created:", data);
+      alert("Account created successfully!");
       navigate('/dashboard'); // Go straight to dashboard after signup
+
     } catch (err) {
       console.error(err);
-      setError("Error creating account. Password should be 6+ chars.");
+      setError(err.message || "Error creating account.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,9 +68,19 @@ const Signup = () => {
 
             <button 
               type="submit" 
-              style={{ padding: '12px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold' }}
+              disabled={loading}
+              style={{ 
+                padding: '12px', 
+                backgroundColor: loading ? '#ccc' : '#28a745', // Turn grey while loading
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '4px', 
+                fontSize: '16px', 
+                cursor: loading ? 'not-allowed' : 'pointer', 
+                fontWeight: 'bold' 
+              }}
             >
-              Sign Up
+              {loading ? 'Creating Account...' : 'Sign Up'}
             </button>
           </form>
 

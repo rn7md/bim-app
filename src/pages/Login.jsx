@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // 1. Added Link here
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../firebase'; // Importing the auth we set up
+import { auth } from '../firebase'; 
 
 const Login = () => {
   const navigate = useNavigate();
   
-  // State variables to hold user input
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Stop the page from reloading
-    setError(''); // Clear previous errors
+    e.preventDefault(); 
+    setError(''); 
 
     try {
-      // 1. Send data to Firebase
       await signInWithEmailAndPassword(auth, email, password);
-      
-      // 2. If successful, go to Dashboard
       console.log("Login Successful");
       navigate('/dashboard');
     } catch (err) {
-      // 3. If failed, show error message
       console.error(err);
       setError("Failed to login. Check your email/password.");
     }
@@ -67,8 +62,9 @@ const Login = () => {
             </button>
           </form>
 
+          {/* 2. UPDATED SECTION: Using Link component */}
           <p style={{ marginTop: '20px', fontSize: '14px', color: '#666', textAlign: 'center' }}>
-            New to BIM Platform? <span style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}>Sign Up</span>
+            New to BIM Platform? <Link to="/signup" style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'none', fontWeight: 'bold' }}>Sign Up</Link>
           </p>
         </div>
       </div>
