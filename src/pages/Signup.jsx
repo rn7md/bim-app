@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { supabase } from "../supbaseClient.js";
+// CHANGE 1: We import Firebase now, not Supabase
+import { auth, db } from '../firebase'; 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -8,7 +11,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -16,17 +19,20 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      // CHANGED: Create the user in Supabase
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
+      // CHANGE 2: This is the command to create a user in Firebase
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // CHANGE 3: We save the user's info to the Database (Firestore)
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        uid: user.uid,
+        createdAt: new Date().toISOString()
       });
 
-      if (error) throw error;
-
-      console.log("Account Created:", data);
+      console.log("Account Created:", user);
       alert("Account created successfully!");
-      navigate('/dashboard'); // Go straight to dashboard after signup
+      navigate('/dashboard'); 
 
     } catch (err) {
       console.error(err);
@@ -71,7 +77,7 @@ const Signup = () => {
               disabled={loading}
               style={{ 
                 padding: '12px', 
-                backgroundColor: loading ? '#ccc' : '#28a745', // Turn grey while loading
+                backgroundColor: loading ? '#ccc' : '#28a745', 
                 color: 'white', 
                 border: 'none', 
                 borderRadius: '4px', 

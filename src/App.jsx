@@ -5,15 +5,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import './App.css'; 
 
-import { useEffect } from 'react';
-
 function App() {
- 
-  useEffect(() => {
-    console.log("Supabase connected:", supabase);
-  }, []);
-  // -------------------------------------------
-
   return (
     <Router>
       <Routes>
