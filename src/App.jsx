@@ -5,12 +5,10 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import './App.css'; 
 
-// Import Supabase and useEffect
-import { supabase } from './supbaseClient.js';
 import { useEffect } from 'react';
 
 function App() {
-  // --- PASTE IT HERE (Inside the function) ---
+ 
   useEffect(() => {
     console.log("Supabase connected:", supabase);
   }, []);
